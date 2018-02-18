@@ -3,7 +3,7 @@ import cv2
 from faceDetection import faceDetect
 from PIL import ImageTk, Image
 
-camera_port = 1
+camera_port = 0
 capture = cv2.VideoCapture(camera_port);
 s,image = capture.read()
 s = True
