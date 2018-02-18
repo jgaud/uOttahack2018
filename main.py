@@ -1,14 +1,81 @@
-import cognitive_face as CF
+import tkinter as tk
+import os
 
-KEY = '99501daf83fc4c5f8e86ba5d20cdcb58'  # Replace with a valid subscription key (keeping the quotes in place).
-CF.Key.set(KEY)
-# If you need to, you can change your base API url with:
-#CF.BaseUrl.set('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/')
+from PIL import ImageTk, Image
+from time import sleep
+from capture import takeCapture
+from faceDetection import faceDetect
+from camera_cv import mainFunction
+    
 
-BASE_URL = 'https://eastus2.api.cognitive.microsoft.com/face/v1.0/'  # Replace with your regional Base URL
-CF.BaseUrl.set(BASE_URL)
+class MainApplication(tk.Frame):  
+    def __init__(self, parent, *args, **kwargs):
+        def callback():
+            path = takeCapture()
+            img = ImageTk.PhotoImage(Image.open(path))
+            data = faceDetect(path)
+            image.configure(image=img)
+            image.image = img
 
-# You can use this example JPG or replace the URL below with your own URL to a JPEG image.
-img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-faces = CF.face.detect(img_url)
-print(faces)
+            if len(data) > 0:
+                smileInput.configure(text = data[0])
+                genderInput.configure(text = data[1])
+                ageInput.configure(text = data[2])
+                glassesInput.configure(text = data[3])
+                hairInput.configure(text = data[4])
+        
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+        parent.state('zoomed')
+        parent.title("Face recognition software")
+        imageFrame = tk.Frame(parent)
+        buttons = tk.Frame(parent)
+        imageFrame.pack(side = tk.TOP)
+        buttons.pack()
+        img = ImageTk.PhotoImage(Image.open("picture.jpg"))
+        image = tk.Label(imageFrame, image=img)
+        image.pack(fill = "both", expand = "yes")
+        
+
+        pictureButton = tk.Button(buttons, text="Take picture", command=callback)
+        detectObjectsButton = tk.Button(buttons, text="Detect objects", command=mainFunction)
+        quitButton = tk.Button(buttons, text="Quit", command=quit)
+
+        genderLabel = tk.Label(buttons, text = "Gender: ")
+        ageLabel = tk.Label(buttons, text = "Age: ")
+        smileLabel = tk.Label(buttons, text = "Smile: ")
+        hairLabel = tk.Label(buttons, text = "Facial Hair: ")
+        glassesLabel = tk.Label(buttons, text = "Glasses: ")
+
+        genderInput = tk.Label(buttons, text = "")
+        ageInput = tk.Label(buttons, text = "")
+        smileInput = tk.Label(buttons, text = "")
+        hairInput = tk.Label(buttons, text = "")
+        glassesInput = tk.Label(buttons, text = "")
+
+        genderLabel.pack()
+        genderInput.pack()
+        ageLabel.pack()
+        ageInput.pack()
+        smileLabel.pack()
+        smileInput.pack()
+        hairLabel.pack()
+        hairInput.pack()
+        glassesLabel.pack()
+        glassesInput.pack()
+        pictureButton.pack()
+        detectObjectsButton.pack()
+        quitButton.pack()
+        
+        callback()
+
+    
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    MainApplication(root).pack(side="top", fill="both", expand=True)
+    root.mainloop()
+
+
+
