@@ -1,5 +1,5 @@
 # uOttahack2018
-Powered by Python 3.6, Buggy Detector is a breakthrough in advances in home security technology.
+Powered by Python 3.6, Buggy Detector and created in 24 hours is a breakthrough in home security technology.
 
 Featuring facial recognition, speech recognition, and computer vision; Buggy Detector revolutionizes the way home security works. Buggy Detector actively monitors your home or establishment while you’re away. In case of intruders, Buggy Detector alerts you with an image of the trespasser.
 
